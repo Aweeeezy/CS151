@@ -24,7 +24,12 @@ public class Player {
             System.out.println("No more available undos");
         }
     }
+
+    public boolean hasUndo(){
+        return undosRemaining <=3;
+    }
     private int score;
     private int undosRemaining;
+
 
 }
