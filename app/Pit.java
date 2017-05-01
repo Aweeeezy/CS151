@@ -1,6 +1,6 @@
 public class Pit {
 
-    public Pit(int id, int count, boolean player, boolean isMancala) {
+    public Pit(int id, int count, int player, boolean isMancala) {
         this.id = id;
         this.count = count;
         this.player = player;
@@ -23,11 +23,11 @@ public class Pit {
         this.count = count;
     }
 
-    public boolean isPlayer() {
-        return player;
+    public boolean isPlayer(int p) {
+        return p == player;
     }
 
-    public void setPlayer(boolean player) {
+    public void setPlayer(int player) {
         this.player = player;
     }
 
@@ -37,7 +37,7 @@ public class Pit {
 
     private int id;
     private int count;
-    private boolean player;
+    private int player;
     private boolean isMancala;
 
 }

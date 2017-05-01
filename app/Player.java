@@ -13,8 +13,8 @@ public class Player {
         this.score = score;
     }
 
-    public int getUndosRemaining(){
-        return this.undosRemaining;
+    public boolean hasUndo(){
+        return this.undosRemaining > 0;
     }
 
     public void useUndo(){

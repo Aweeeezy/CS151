@@ -1,9 +1,12 @@
+import javax.swing.event.*;
+import java.util.*;
+
 public class BoardModel {
   Pits pits;
   Players players;
   int currentPlayer;
   Pit currentPit;
-  ArrayList<UndoElement> undoItems;
+  ArrayList<UndoItem> undoItems;
   ArrayList<ChangeListener> listeners;
   ArrayList<String> styleIdentifiers;
 
@@ -11,72 +14,72 @@ public class BoardModel {
     currentPlayer = 0;
     pits = new Pits();
     players = new Players();
-    undoItems = new ArrayList<UndoElement>(2);
+    undoItems = new ArrayList<UndoItem>(2);
     listeners = new ArrayList<ChangeListener>(12);
     styleIdentifiers = new ArrayList<String>();
   }
 
   public void takeTurn(int pitID) {
-    undoItems[0] = pits.getOld();
-    undoItems[1] = players.getOld();
+    undoItems.set(0, pits.getOld());
+    undoItems.set(1, players.getOld());
 
     // Initializes map used for finding corresponding pit
-    HashMap<int, int> pitMap = new HashMap<>();
+    HashMap<Integer, Integer> pitMap = new HashMap<>();
     for(int i=0; i<13; i++)
       if (i != 6)
-        pitMap.put(i:12-i);
+        pitMap.put(i, 12-i);
 
     int enemyMancala;
-    if (currentPlayer)
+    if (currentPlayer == 1)
       enemyMancala = 13;
     else
       enemyMancala = 6;
 
     Pit currentPit = pits.get(pitID);
-    int stones = currentPit.count;
-    currentPit.count = 0;
+    int stones = currentPit.getCount();
+    currentPit.setCount(0);
     while (stones > 1) {
-      if (currentPit.id != enemyMancala) {
+      if (currentPit.getId() != enemyMancala) {
         stones -= 1;
-        currentPit.count += 1;
+        currentPit.setCount(currentPit.getCount() + 1);
       }
       try {
-        currentPit = pits.get(currentPit.id + 1);
+        currentPit = pits.get(currentPit.getId() + 1);
       } catch (IndexOutOfBoundsException e) {
         currentPit = pits.get(0);
       }
     }
 
     boolean turnOver = true;
-    if (currentPit.isMancala && currentPit.player == currentPlayer) {
+    if (currentPit.isMancala() && currentPit.isPlayer(currentPlayer)) {
       turnOver = false;
-    } else if (currentPit.isMancala) {
-      currentPit = currentPit.get(currentPit.id + 1);
+    } else if (currentPit.isMancala()) {
+      currentPit = pits.get(currentPit.getId() + 2);
     }
 
-    int prizePit = currentPit.id;
-    if (currentPit.player == currentPlayer) {
-      if (currentPit.count == 0) {
-        Iterator <Pit> iterator = pits.iterator(prizePit);
-        while (currentPit.id != pitMap.get(prizePit))
+    int prizePit = currentPit.getId();
+    if (currentPit.isPlayer(currentPlayer)) {
+      if (currentPit.getCount() == 0) {
+        Iterator <Pit> iterator = pits.getIterator(prizePit);
+        while (currentPit.getId() != pitMap.get(prizePit))
           try {
             currentPit = iterator.next();
           } catch (IndexOutOfBoundsException e) {
             currentPit = pits.get(0);
           }
 
-        stolenAmount = currentPit.count;
-        currentPit.count = 0;
-        while (currentPit.id != prizePit)
+        int stolenAmount = currentPit.getCount();
+        currentPit.setCount(0);
+        while (currentPit.getId() != prizePit)
           try {
             currentPit = iterator.next();
           } catch (IndexOutOfBoundsException e) {
             currentPit = pits.get(0);
           }
-        currentPit.count = stolenAmount;
+        currentPit.setCount(stolenAmount);
       }
     } else {
-      currentPit.count += 1;
+      currentPit.setCount(currentPit.getCount() + 1);
     }
 
     notify(turnOver);
@@ -85,10 +88,10 @@ public class BoardModel {
   public void notify(boolean turnOver) {
     ChangeEvent e = new ChangeEvent(this);
     for (ChangeListener c : listeners) {
-      c.stateChanged(ChangeEvent e);
+      c.stateChanged(e);
     }
 
-    if turnOver
+    if (turnOver)
       System.out.println("Turn is over -- display Undo / End Turn buttons");
     else
       System.out.println("You ended on your mancala -- take another turn");
@@ -99,10 +102,10 @@ public class BoardModel {
   }
 
   public void undo() {
-    if (players[currentPlayer].hasUndo()) {
-      pits = undoItems[0];
-      players = undoItems[1];
-      players[currentPlayer].useUndo();
+    if (players.get(currentPlayer).hasUndo()) {
+      pits = (Pits) undoItems.get(0);
+      players = (Players) undoItems.get(1);
+      players.get(currentPlayer).useUndo();
     } else {
       System.out.println("No more undos left");
     }
