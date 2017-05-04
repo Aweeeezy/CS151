@@ -8,15 +8,13 @@ public class BoardModel {
   Pit currentPit;
   ArrayList<UndoItem> undoItems;
   ArrayList<ChangeListener> listeners;
-  ArrayList<String> styleIdentifiers;
 
   public BoardModel() {
     currentPlayer = 0;
     pits = new Pits();
     players = new Players();
     undoItems = new ArrayList<UndoItem>(2);
-    listeners = new ArrayList<ChangeListener>(12);
-    styleIdentifiers = new ArrayList<String>();
+    listeners = new ArrayList<ChangeListener>();
   }
 
   public void takeTurn(int pitID) {
@@ -109,5 +107,9 @@ public class BoardModel {
     } else {
       System.out.println("No more undos left");
     }
+  }
+
+  public void changePlayer() {
+    currentPlayer = (currentPlayer + 1) % 2;
   }
 }
