@@ -25,7 +25,7 @@ public class MancalaTester {
     model.registerView(new ChangeListener() {
       public void stateChanged(ChangeEvent e) {
         System.out.println("State changed");
-        view.board.update(strategy);
+        view.update(strategy);
       }
     });
   }

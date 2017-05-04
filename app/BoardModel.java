@@ -108,4 +108,8 @@ public class BoardModel {
       System.out.println("No more undos left");
     }
   }
+
+  public void changePlayer() {
+    currentPlayer = (currentPlayer + 1) % 2;
+  }
 }
