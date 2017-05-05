@@ -12,6 +12,6 @@ public class Players extends UndoItem {
   }
 
   public UndoItem getOld() {
-    return super.clone();
+    return this.clone();
   }
 }

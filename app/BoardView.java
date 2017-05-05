@@ -17,12 +17,14 @@ public class BoardView extends JFrame {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         JButton solidButton  = new JButton("Solid Style Layout");
-        JButton stripedButton = new JButton("Stripd Style Layout");
+        JButton stripedButton = new JButton("Striped Style Layout");
 
         solidButton.addActionListener(new ActionListener() {
           public void actionPerformed(ActionEvent e) {
             StyleStrategy s = new SolidStrategy();
             BoardPanel board = new BoardPanel(s);
+            solidButton.setVisible(false);
+            stripedButton.setVisible(false);
           }
         });
 
@@ -30,16 +32,15 @@ public class BoardView extends JFrame {
           public void actionPerformed(ActionEvent e) {
             StyleStrategy s = new StripedStrategy();
             BoardPanel board = new BoardPanel(s);
+            solidButton.setVisible(false);
+            stripedButton.setVisible(false);
           }
         });
 
-
         JPanel buttonPanel = new JPanel();
-
         buttonPanel.add(solidButton);
         buttonPanel.add(stripedButton);
         frame.add(buttonPanel);
-
         frame.setVisible(true);
     }
 }

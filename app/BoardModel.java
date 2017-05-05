@@ -12,14 +12,15 @@ public class BoardModel {
   public BoardModel() {
     currentPlayer = 0;
     pits = new Pits();
+    System.out.println("Should have just made pits");
     players = new Players();
     undoItems = new ArrayList<UndoItem>(2);
     listeners = new ArrayList<ChangeListener>();
   }
 
   public void takeTurn(int pitID) {
-    undoItems.set(0, pits.getOld());
-    undoItems.set(1, players.getOld());
+    /*undoItems.set(0, pits.getOld());
+    undoItems.set(1, players.getOld());*/
 
     // Initializes map used for finding corresponding pit
     HashMap<Integer, Integer> pitMap = new HashMap<>();

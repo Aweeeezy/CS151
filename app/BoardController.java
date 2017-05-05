@@ -10,7 +10,9 @@ public class BoardController {
   ActionListener undo;
   BoardModel gameState;
 
-  public BoardController() {
+  public BoardController(BoardModel m) {
+    gameState = m;
+
     endTurn = new ActionListener() {
       public void actionPerformed(ActionEvent e) {
         gameState.changePlayer();
@@ -23,8 +25,6 @@ public class BoardController {
       }
     };
 
-    gameState = new BoardModel();
-
     pitListeners = new ArrayList<ActionListener>();
     for (int i=0; i<12; i++) {
       int id;
@@ -34,10 +34,14 @@ public class BoardController {
         id = i;
       pitListeners.add(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
+          System.out.println("Clicking pit " + id);
           gameState.takeTurn(id);
         }
       });
     }
+  }
 
+  public ActionListener getListener(int i) {
+    return pitListeners.get(i);
   }
 }

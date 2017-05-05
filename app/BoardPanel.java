@@ -7,6 +7,8 @@ public class BoardPanel {
     StyleStrategy strategy = (StyleStrategy) s;
     String source = strategy.defineStrategy();
     System.out.println(source);
+
+
   }
 
 }
