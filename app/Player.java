@@ -25,9 +25,6 @@ public class Player {
         }
     }
 
-    public boolean hasUndo(){
-        return undosRemaining <=3;
-    }
     private int score;
     private int undosRemaining;
 

@@ -1,3 +1,3 @@
 public interface StyleStrategy {
-  public void defineStratey();
+  public String defineStrategy();
 }

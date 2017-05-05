@@ -1,38 +1,45 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.*;
 import java.util.ArrayList;
 
 public class BoardView extends JFrame {
-
     JFrame frame;
-    JPanel topPanel;
-    JPanel bottomPanel;
-    StyleStrategy board;
     private ArrayList<Icon> pitCounter;
 
-    public void update(StyleStrategy s){
-
-
+    public void update(){
     }
+
     public BoardView() {
-        pitCounter = new ArrayList<>(14);
-
-
         frame = new JFrame("Mancala Game");
-        topPanel = new JPanel();
-        bottomPanel = new JPanel();
         frame.setLayout(new BorderLayout());
+        frame.setSize(700, 700);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        JButton solidButton  = new JButton("Solid Style Layout");
+        JButton stripedButton = new JButton("Stripd Style Layout");
+
+        solidButton.addActionListener(new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            StyleStrategy s = new SolidStrategy();
+            BoardPanel board = new BoardPanel(s);
+          }
+        });
+
+        stripedButton.addActionListener(new ActionListener() {
+          public void actionPerformed(ActionEvent e) {
+            StyleStrategy s = new StripedStrategy();
+            BoardPanel board = new BoardPanel(s);
+          }
+        });
 
 
-        frame.add(topPanel, BorderLayout.NORTH);
-        frame.add(bottomPanel, BorderLayout.SOUTH);
+        JPanel buttonPanel = new JPanel();
 
+        buttonPanel.add(solidButton);
+        buttonPanel.add(stripedButton);
+        frame.add(buttonPanel);
 
-        JButton endTurnButton = new JButton("End Turn");
-        JButton undoButton = new JButton("Undo Turn");
-    }
-
-
-
+        frame.setVisible(true);
     }
 }
